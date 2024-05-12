@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
+    "m:dev": "prisma migrate dev",
     "build": "tsup src --out-dir build",
     "start": "node build/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,12 +19,14 @@
     "@types/node": "20.12.11",
     "eslint": "8.57.0",
     "globals": "15.2.0",
+    "prisma": "5.13.0",
     "tsup": "8.0.2",
     "tsx": "4.10.0",
     "typescript": "5.4.5",
     "typescript-eslint": "7.8.0"
   },
   "dependencies": {
+    "@prisma/client": "5.13.0",
     "dotenv": "16.4.5",
     "fastify": "4.27.0",
     "zod": "3.23.8"

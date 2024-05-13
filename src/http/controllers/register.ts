@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { RegisterService } from '../services/register'
 import { PrismaUsersRepository } from '@/respositories/prisma/prisma-users-repository'
-import { sendErrorUtil } from './util-send-error'
+
 
 export async function register(
 	request: FastifyRequest, 
@@ -26,7 +26,7 @@ export async function register(
 		})
 
 	} catch(err) {
-		return sendErrorUtil(reply, err)
+		throw err
 	}
 
 	return reply.status(201).send()

@@ -1,16 +1,22 @@
-import { describe, expect, test } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 import { RegisterService } from './register'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/respositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists'
 
+let usersRepository : InMemoryUsersRepository
+let sut : RegisterService
+
 describe('Registro de usuário', () => {
 
-	test('A senha do usuário deve ser um hash', async () => {
-		const usersRepository = new InMemoryUsersRepository()
-		const registerService = new RegisterService(usersRepository)
+	beforeEach(() => {
+		usersRepository = new InMemoryUsersRepository()
+		sut = new RegisterService(usersRepository)
+	})
 
-		const { user } = await registerService.execute({
+	test('A senha do usuário deve ser um hash', async () => {
+
+		const { user } = await sut.execute({
 			name: 'Usuario Teste', 
 			email: 'usuario@teste.com',
 			password: '123456'
@@ -22,17 +28,15 @@ describe('Registro de usuário', () => {
 	})
 
 	test('Não deve ser possível se cadastrar com o mesmo email', async () => {
-		const usersRepository = new InMemoryUsersRepository()
-		const registerService = new RegisterService(usersRepository)
 
-		await registerService.execute({
+		await sut.execute({
 			name: 'Teste',
 			email: 'teste@gmail.com',
 			password: '123456'
 		})
 
 		await expect(() => 
-			registerService.execute({
+			sut.execute({
 				name: 'Teste',
 				email: 'teste@gmail.com',
 				password: '123456'
@@ -42,10 +46,8 @@ describe('Registro de usuário', () => {
 	})
 
 	test('O usuário deve ser cadastrado', async () => {
-		const usersRepository = new InMemoryUsersRepository()
-		const registerService = new RegisterService(usersRepository)
 
-		const { user } = await registerService.execute({
+		const { user } = await sut.execute({
 			name: 'Teste',
 			email: 'cadastro_correto@gmail.com',
 			password: '123456'

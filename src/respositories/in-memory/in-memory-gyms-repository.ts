@@ -3,7 +3,16 @@ import { GymsRepository } from '../gyms-repository';
 import { randomUUID } from 'crypto';
 
 export class InMemoryGymsRepository implements GymsRepository {
+	
 	public items : Gym[] = []
+
+	async searchMany(query: string, page: number): Promise<Gym[]> {
+		const NUMBER_REGISTER_PAGE = 20
+
+		return this.items
+			.filter(item => item.title.includes(query))
+			.slice((page - 1) * NUMBER_REGISTER_PAGE, page * NUMBER_REGISTER_PAGE)
+	}
 
 	async findById(id: string): Promise<Gym | null> {
 		const gym = this.items.find(item => item.id === id)

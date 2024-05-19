@@ -1,9 +1,10 @@
 import fastify from 'fastify';
-import { appRoutes } from './http/routes';
 import { ZodError } from 'zod';
 import { env } from './env';
 import { ErrorDefault } from './http/services/errors/error-default';
 import fastifyJwt from '@fastify/jwt';
+import { usersRoutes } from './http/controllers/users/routes';
+import { gymsRoutes } from './http/controllers/gyms/routes';
 
 export const app = fastify()
 
@@ -13,7 +14,8 @@ app.register(fastifyJwt, {
 })
 
 // Registra todas as rotas da Aplicação 
-app.register(appRoutes)
+app.register(usersRoutes)
+app.register(gymsRoutes)
 
 // Caso de algum erro em alguma rota será tratado aqui 
 // para que todos os erros tenham uma saida uniforme

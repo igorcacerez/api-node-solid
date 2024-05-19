@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { makeRegisterService } from '../services/factories/make-register-service'
+import { makeRegisterService } from '../../services/factories/make-register-service'
 
 
 export async function register(

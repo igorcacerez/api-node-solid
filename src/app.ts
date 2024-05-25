@@ -5,6 +5,7 @@ import { ErrorDefault } from './http/services/errors/error-default';
 import fastifyJwt from '@fastify/jwt';
 import { usersRoutes } from './http/controllers/users/routes';
 import { gymsRoutes } from './http/controllers/gyms/routes';
+import { checkInsRoutes } from './http/controllers/check-ins/routes';
 
 export const app = fastify()
 
@@ -16,6 +17,7 @@ app.register(fastifyJwt, {
 // Registra todas as rotas da Aplicação 
 app.register(usersRoutes)
 app.register(gymsRoutes)
+app.register(checkInsRoutes)
 
 // Caso de algum erro em alguma rota será tratado aqui 
 // para que todos os erros tenham uma saida uniforme

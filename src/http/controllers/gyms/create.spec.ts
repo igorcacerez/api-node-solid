@@ -3,7 +3,7 @@ import request from 'supertest';
 import { app } from '@/app';
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user';
 
-describe('Perfil (e2e)', () => {
+describe('Criação de Academia (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
 	})
@@ -12,19 +12,20 @@ describe('Perfil (e2e)', () => {
 		await app.close()
 	})
     
-	test('Deve ser possivel buscar o perfil do usuário logado', async () => {
+	test('Deve ser possivel criar uma academia', async () => {
 		const { token } = await createAndAuthenticateUser(app)
 
 		const response = await request(app.server)
-			.get('/me')
+			.post('/gyms')
 			.set('Authorization', `Bearer ${token}`)
-			.send()
-
-		expect(response.status).toEqual(200)
-		expect(response.body).toEqual({
-			user: expect.objectContaining({
-				email: 'igor@gmail.com'
+			.send({
+				title: 'Academia Test',
+				description: 'Descricao aqui',
+				phone: '18996496255',
+				latitude: -21.2998186,
+				longitude: -50.3582933
 			})
-		})
+
+		expect(response.status).toEqual(201)
 	})
 })

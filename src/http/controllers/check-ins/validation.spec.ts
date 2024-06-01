@@ -14,7 +14,7 @@ describe('Validação de CheckIns (e2e)', () => {
 	})
     
 	test('Deve ser possivel validar um check-in', async () => {
-		const { token } = await createAndAuthenticateUser(app)
+		const { token } = await createAndAuthenticateUser(app, true)
 
 		// Recupera o primeiro usuario cadastrado no banco
 		const user = await prisma.user.findFirstOrThrow()

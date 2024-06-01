@@ -13,13 +13,17 @@ export async function refresh(
 	try {
 
 		//Cria o token JWT
-		const token = await reply.jwtSign({}, {
+		const token = await reply.jwtSign({
+			role: request.user.role
+		}, {
 			sign: {
 				sub: request.user.sub
 			}
 		})
 
-		const refreshtoken = await reply.jwtSign({}, {
+		const refreshtoken = await reply.jwtSign({
+			role: request.user.role
+		}, {
 			sign: {
 				sub: request.user.sub,
 				expiresIn: '7d' // 7 dias

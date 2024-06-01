@@ -23,13 +23,17 @@ export async function authenticate(
 		})
 
 		// Cria o token JWT
-		const token = await reply.jwtSign({}, {
+		const token = await reply.jwtSign({
+			role: user.role
+		}, {
 			sign: {
 				sub: user.id
 			}
 		})
 
-		const refreshtoken = await reply.jwtSign({}, {
+		const refreshtoken = await reply.jwtSign({
+			role: user.role
+		}, {
 			sign: {
 				sub: user.id,
 				expiresIn: '7d' // 7 dias

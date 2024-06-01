@@ -1,37 +1,27 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
-import { makeAuthenticateService } from '../../services/factories/make-authenticate-service'
 
-
-export async function authenticate(
+export async function refresh(
 	request: FastifyRequest, 
 	reply: FastifyReply
 ) : Promise<FastifyReply> {
 
-	const authenticateBodySchema = z.object({
-		email: z.string().email(),
-		password: z.string().min(6)   
-	})
+	console.log('aa')
 
-	const {email, password} = authenticateBodySchema.parse(request.body)
+	// Verifica se tem o token no cookie 
+	await request.jwtVerify({ onlyCookie: true })
 
 	try {
-		const authenticateService = makeAuthenticateService()
 
-		const { user } = await authenticateService.execute({
-			email, password
-		})
-
-		// Cria o token JWT
+		//Cria o token JWT
 		const token = await reply.jwtSign({}, {
 			sign: {
-				sub: user.id
+				sub: request.user.sub
 			}
 		})
 
 		const refreshtoken = await reply.jwtSign({}, {
 			sign: {
-				sub: user.id,
+				sub: request.user.sub,
 				expiresIn: '7d' // 7 dias
 			}
 		})

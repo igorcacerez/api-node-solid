@@ -1,4 +1,5 @@
 import fastify from 'fastify';
+import fastifyCookie from '@fastify/cookie';
 import { ZodError } from 'zod';
 import { env } from './env';
 import { ErrorDefault } from './http/services/errors/error-default';
@@ -11,8 +12,17 @@ export const app = fastify()
 
 // Registra o módulo para uso do JWT
 app.register(fastifyJwt, {
-	secret: env.JWT_SECRET
+	secret: env.JWT_SECRET,
+	cookie: {
+		cookieName: 'refreshtoken',
+		signed: false 
+	},
+	sign: {
+		expiresIn: '10m' // 10 minutos
+	}
 })
+
+app.register(fastifyCookie)
 
 // Registra todas as rotas da Aplicação 
 app.register(usersRoutes)
